@@ -24,9 +24,12 @@ jobs:
       - name: Login to GitHub Container Registry
         run: docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.CR_PAT }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
+          push: false
           tags: ghcr.io/midit/ml-ci-cd:${{ github.sha }}
+
+      - name: Push Docker image
+        run: docker push ghcr.io/midit/ml-ci-cd:${{ github.sha }}
