@@ -1,0 +1,22 @@
+version: '3.8' # Wersja składni Docker Compose
+
+services:
+  app: # Nazwa serwisu dla aplikacji
+    build: . # Wskazuje, że obraz ma być zbudowany z Dockerfile w bieżącym katalogu
+    ports:
+      - "8001:8000" # Mapuje port 8001 na hoście do portu 8000 w kontenerze
+    networks:
+      - app-network # Przypisuje serwis do sieci 'app-network'
+    container_name: fastapi_app # Nadaje kontenerowi czytelną nazwę
+    depends_on: # Określa zależności między serwisami
+      - redis
+
+  redis: # Nazwa serwisu dla bazy danych Redis
+    image: redis:alpine # Używa oficjalnego obrazu Redis w wersji Alpine
+    networks:
+      - app-network # Przypisuje serwis Redis do tej samej sieci
+    container_name: redis_db # Nadaje kontenerowi czytelną nazwę
+
+networks:
+  app-network: # Definicja sieci
+    driver: bridge # Standardowy sterownik sieciowy 'bridge'
